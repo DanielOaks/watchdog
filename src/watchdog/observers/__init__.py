@@ -37,7 +37,8 @@ from watchdog.observers.api import BaseObserver, DEFAULT_OBSERVER_TIMEOUT
 # both FSEvents and kqueue, and FSEvents is the preferred way of monitoring
 # file system events on this OS.
 try: # pragma: no cover
-  from watchdog.observers.inotify import InotifyObserver as _Observer
+  # from watchdog.observers.inotify import InotifyObserver as _Observer
+  from watchdog.observers.inotify_pyinotify import InotifyObserver as _Observer
 except ImportError: # pragma: no cover
   try: # pragma: no cover
     from watchdog.observers.fsevents import FSEventsObserver as _Observer
