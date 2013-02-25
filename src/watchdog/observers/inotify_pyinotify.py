@@ -75,7 +75,11 @@ if platform.is_linux():
             self.emitter = emitter
 
         def process_IN_MOVED_TO(self, event):
-            self.emitter.queue_event(ACTION_EVENT_MAP[event.dir, EVENT_TYPE_MOVED](event.src_pathname, event.pathname))
+            if hasattr(event, 'src_pathname'):
+                self.emitter.queue_event(ACTION_EVENT_MAP[event.dir, EVENT_TYPE_MOVED](event.src_pathname, event.pathname))
+            else:
+                # Yeah, not correct, but I'm not sure how else watchdog expects to handle this
+                self.emitter.queue_event(ACTION_EVENT_MAP[event.dir, EVENT_TYPE_MODIFIED](event.pathname))
 
         def process_IN_ATTRIB(self, event):
             self.emitter.queue_event(ACTION_EVENT_MAP[event.dir, EVENT_TYPE_MODIFIED](event.pathname))
